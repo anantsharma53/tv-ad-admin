@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import './DeviceManager.css'; // Create this CSS file for styling
+import './DeviceManager.css';
 import { useNavigate } from 'react-router-dom';
 
 const DeviceManager = () => {
@@ -24,8 +24,8 @@ const DeviceManager = () => {
     }
   });
 
-  // Fetch devices
-  const fetchDevices = async () => {
+  // ✅ Stable fetchDevices using useCallback
+  const fetchDevices = useCallback(async () => {
     setLoading(true);
     try {
       const response = await api.get('/devices/');
@@ -40,22 +40,18 @@ const DeviceManager = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [api, navigate]);
 
+  // ✅ Properly include dependency
   useEffect(() => {
     fetchDevices();
-  }, []);
+  }, [fetchDevices]);
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
-      [name]: value
-    }));
+    setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  // Register new device
   const registerDevice = async (e) => {
     e.preventDefault();
     setLoading(true);
@@ -76,7 +72,6 @@ const DeviceManager = () => {
     }
   };
 
-  // Handle device check-in
   const handleCheckIn = async (deviceId) => {
     try {
       const response = await api.post(`/devices/${deviceId}/check_in/`);
@@ -86,8 +81,6 @@ const DeviceManager = () => {
         playlist: response.data.playlist,
         scheduleId: response.data.schedule_id
       });
-      
-      // Refresh device list to update last_active
       fetchDevices();
     } catch (err) {
       console.error('Error during check-in:', err);
@@ -95,12 +88,9 @@ const DeviceManager = () => {
     }
   };
 
-  // Toggle device active status
   const toggleDeviceStatus = async (deviceId, currentStatus) => {
     try {
-      await api.patch(`/devices/${deviceId}/`, {
-        is_active: !currentStatus
-      });
+      await api.patch(`/devices/${deviceId}/`, { is_active: !currentStatus });
       fetchDevices();
     } catch (err) {
       console.error('Error updating device status:', err);
@@ -113,13 +103,12 @@ const DeviceManager = () => {
       <h2>Device Management</h2>
       
       {error && <div className="error-message">{error}</div>}
-      <button 
-        className="btn"
-        onClick={() => navigate('/admin-dashboard')}
-            >
-                Back to Dashboard
+      
+      <button className="btn" onClick={() => navigate('/admin-dashboard')}>
+        Back to Dashboard
       </button>
-      {/* Device Registration Form */}
+
+      {/* Registration Form */}
       <div className="device-form">
         <h3>Register New Device</h3>
         <form onSubmit={registerDevice}>
@@ -168,7 +157,7 @@ const DeviceManager = () => {
         </form>
       </div>
 
-      {/* Devices List */}
+      {/* Device List */}
       <div className="devices-list">
         <h3>Your Devices</h3>
         {loading && devices.length === 0 ? (
@@ -200,13 +189,13 @@ const DeviceManager = () => {
                     </span>
                   </td>
                   <td className="actions">
-                    <button 
+                    <button
                       onClick={() => toggleDeviceStatus(device.id, device.is_active)}
                       className="toggle-btn"
                     >
                       {device.is_active ? 'Deactivate' : 'Activate'}
                     </button>
-                    <button 
+                    <button
                       onClick={() => handleCheckIn(device.id)}
                       className="checkin-btn"
                     >
