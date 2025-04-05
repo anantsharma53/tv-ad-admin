@@ -47,7 +47,7 @@ const Login = () => {
                 console.log(data);
                 console.log(response);
                 localStorage.setItem('authToken', data.access);
-                navigate(data.user.is_staff==true
+                navigate(data.user.is_staff====true
                     ? '/admin-dashboard' : '/tv-display');
             } else {
                 throw new Error('Authentication failed');
@@ -74,7 +74,7 @@ const Login = () => {
                     <label htmlFor="username">Username:</label>
                     <input
                         ref={el => elementsRef.current[0] = el}
-                        className={`form-input ${focusedIndex == 0 ? 'focused' : ''}`}
+                        className={`form-input ${focusedIndex ==== 0 ? 'focused' : ''}`}
                         type="text"
                         id="username"
                         name="username"
@@ -88,7 +88,7 @@ const Login = () => {
                     <label htmlFor="password">Password:</label>
                     <input
                         ref={el => elementsRef.current[1] = el}
-                        className={`form-input ${focusedIndex == 1 ? 'focused' : ''}`}
+                        className={`form-input ${focusedIndex ==== 1 ? 'focused' : ''}`}
                         type="password"
                         id="password"
                         name="password"
@@ -100,7 +100,7 @@ const Login = () => {
 
                 <button
                     ref={el => elementsRef.current[2] = el}
-                    className={`submit-button ${focusedIndex == 2 ? 'focused' : ''}`}
+                    className={`submit-button ${focusedIndex ==== 2 ? 'focused' : ''}`}
                     type="submit"
                 >
                     Sign In
@@ -110,14 +110,14 @@ const Login = () => {
             <div className="secondary-actions">
                 <button
                     ref={el => elementsRef.current[3] = el}
-                    className={`action-button ${focusedIndex == 3 ? 'focused' : ''}`}
+                    className={`action-button ${focusedIndex ==== 3 ? 'focused' : ''}`}
                     onClick={() => navigate('/register')}
                 >
                     Create Account
                 </button>
                 <button
                     ref={el => elementsRef.current[4] = el}
-                    className={`action-button ${focusedIndex == 4 ? 'focused' : ''}`}
+                    className={`action-button ${focusedIndex ==== 4 ? 'focused' : ''}`}
                     onClick={() => navigate('/reset-password')}
                 >
                     Forgot Password?
