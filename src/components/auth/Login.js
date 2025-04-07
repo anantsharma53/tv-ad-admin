@@ -74,7 +74,7 @@ const Login = () => {
                     <label htmlFor="username">Username:</label>
                     <input
                         ref={el => elementsRef.current[0] = el}
-                        className={`form-input ${focusedIndex ==== 0 ? 'focused' : ''}`}
+                        className={`form-input ${focusedIndex === 0 ? 'focused' : ''}`}
                         type="text"
                         id="username"
                         name="username"
