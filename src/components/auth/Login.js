@@ -47,7 +47,7 @@ const Login = () => {
                 console.log(data);
                 console.log(response);
                 localStorage.setItem('authToken', data.access);
-                navigate(data.user.is_staff====true
+                navigate(data.user.is_staff===true
                     ? '/admin-dashboard' : '/tv-display');
             } else {
                 throw new Error('Authentication failed');
